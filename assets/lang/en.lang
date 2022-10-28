@@ -1,0 +1,41 @@
+#Menu
+LOC_TITLE:Strategy Game
+LOC_SINGLE_PLAYER:Play Single Player
+LOC_OPTIONS:Options
+LOC_EXIT_DESKTOP:Exit to Desktop
+LOC_BACK:Back
+LOC_LOADING:Loading..
+LOC_CREATE_GAME:New Game
+LOC_START:Start
+LOC_END_TURN:Next Turn
+LOC_DEBUG:Debug Mode
+
+#In-Game UI
+LOC_MOVE:Move Unit
+LOC_WHERE_MOVE:Select where you would like to move
+LOC_MOVEMENT:Movement
+
+#Tiles
+LOC_OCEAN:Ocean
+LOC_COAST:Coast
+
+LOC_SNOW_MOUNTAIN:Snow Mountain
+LOC_TUNDRA_MOUNTAIN:Tundra Mountain
+LOC_PLAINS_MOUNTAIN:Plains Mountain
+LOC_DESERT_MOUNTAIN:Desert Mountain
+LOC_GRASSLAND_MOUNTAIN:Grassland Mountain
+
+LOC_SNOW_HILLS:Snow Hills
+LOC_TUNDRA_HILLS:Tundra Hills
+LOC_PLAINS_HILLS:Plains Hills
+LOC_DESERT_HILLS:Desert Hills
+LOC_GRASSLAND_HILLS:Grassland Hills
+
+LOC_SNOW:Snow
+LOC_TUNDRA:Tundra
+LOC_PLAINS:Plains
+LOC_DESERT:Desert
+LOC_GRASSLAND:Grassland
+
+#Units
+LOC_UNIT_AXEMAN:Axeman

@@ -1,0 +1,9 @@
+*.jar
+*.zip
+.settings/
+bin/
+doc/
+logs/
+jarinjarloader/
+adobe/
+out/

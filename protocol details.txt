@@ -1,0 +1,57 @@
+Class that manages server client communication protocol. Provides many
+methods to decode messages as well as a javadoc description of the entire
+protocol
+
+Servers communicate through text. The protocol will be set up as follows:
+COMMAND;PARAMETER1:PARAMETER2......
+Or just (For simpler or more terse things): 
+COMMAND;PARAMETERS
+No parameters is just the command name.
+COMMAND 
+Commands:
+
+
+
+GAME_S: Command to signal start of game data transmission. No
+parameters
+GAME_E: Command to signal end of game data transmission. No
+parameters
+MAP_S: Command to signal start of map transmission. No
+parameters
+MAP_D: Sets the map size. Two parameters, both ints. The
+two parameters multiplied together should equal the amount of MAP_I
+commands.
+MAP_I: Takes 1 parameter, 10 ascii characters. Using DataEncoder,
+convert the 10 characters into 7 bits each for a total of 70. Bits 1-5 are
+for the terrain (all standard terrain types and 1 special type for natural
+wonders and another for undiscovered). Bits 6-9 are for features. Bits 10-14
+and 59 (I realized I needed more and didn't want to rewrite the javadoc) are
+for resources. Bits 15-28 specify the city (details later). Bits 29-34 and
+59-70 are for building metadata. Bits 45-52 are for buildings. Bits 53-58 are
+for rivers. All other bits are unused. Optional parameters for position, used
+ONLY when updating.
+MAP_W: Does the map wrap?
+MAP_E: Command to signal end of map transmission. No
+parameters
+UNIT_S: Command to signal start of unit data transmission. No
+parameters
+UNIT_I: Command for unit. Takes 1 parameter, 11 ascii characters.
+Using DataEncoder, convert the 11 characters into 7 bits each for a total of
+77. Bits 1-3 is for unit class. Bits 4-10 is unit type. Bits 11-14 is unit
+charges (generic - can be for anything, depends on the unit). Bits 15-22 is
+unit owner. Bits 23-29 is unit xp (again - if applicable). Bits 30-39 is unit
+health. Bits 30-41 are unit x position and bits 42-52 are unit y position.
+Bits 53 - 65 are unit id. Bits 66 - 69 are for unit subtile position. Bits
+70-77 are for unit movement left.
+UNIT_E: Command to signal end of unit data transmission. No
+parameters
+NEXT_TURN: Command to signal end of turn
+TURN: Tells what the current turn is, 1 parameter, the turn as an
+plain text int
+UNIT_M: Command for unit movement. First parameter is the unit ID
+number. The 2nd and 3rd parameters are coordinate for the unit to go to and
+the 4th parameter is unit subtile. It is up to the server to ensure the move
+is possible.
+UPDATE: Generic command to signal the next command will be an
+update.
+ 
