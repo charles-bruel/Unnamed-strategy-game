@@ -17,6 +17,8 @@ public final class HexagonData {
 	public static final int THIRTY_DEGREE_X;
 	public static final int THIRTY_DEGREE_Y;
 	
+	public static final float HEXAGON_RATIO = (float) HEXAGON_WIDTH/(float) HEXAGON_HEIGHT;
+	
 	static {
 		int los_num = HEXAGON_RADIUS/1;//Sin 90 is 1 here just as a demo of how the value was gotten
 		SIXTY_DEGREE_X = (int) (los_num*Math.sin(Math.toRadians(30)));

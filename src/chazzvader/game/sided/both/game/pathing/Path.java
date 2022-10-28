@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import chazzvader.game.content.tiles.Tile;
+import chazzvader.game.content.Tile;
 import chazzvader.game.input.InputHelper;
 import chazzvader.game.other.Console;
 import chazzvader.game.other.SubTileCoordinate;

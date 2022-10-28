@@ -2,8 +2,8 @@ package chazzvader.game.other;
 
 import javax.swing.JOptionPane;
 
-import chazzvader.game.Main;
-
+import chazzvader.game.MainOld;
+@Deprecated
 public class Debug {
 	
 	private static String helpMsg;
@@ -40,13 +40,13 @@ public class Debug {
 		}
 		String[] sa = i.split("\\/");
 		if(sa[0].equalsIgnoreCase("sudo")) {
-			Main.getFrame().getPanel().getClient().sendMSG(sa[1]);
+			MainOld.getFrame().getPanel().getClient().sendMSG(sa[1]);
 			return;
 		}
 		if(sa[0].equalsIgnoreCase("connect")) {
 			String ip = sa[1];
 			int port = Integer.parseInt(sa[2]);
-			Main.getFrame().getPanel().getClient().connect(ip, port);
+			MainOld.getFrame().getPanel().getClient().connect(ip, port);
 			return;
 		}
 		/*String[] sa = i.split(":");

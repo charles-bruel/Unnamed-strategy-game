@@ -3,10 +3,10 @@ package chazzvader.game.content.civilizations;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import chazzvader.game.content.AContent;
 import chazzvader.game.content.civilizations.startbias.StartBias;
-import chazzvader.game.content.manager.Content;
 
-public abstract class Civilization extends Content {
+public abstract class Civilization extends AContent {
 
 	private ArrayList<StartBias> startBias;
 	

@@ -2,10 +2,8 @@ package chazzvader.game.sided.client.swing;
 
 import javax.swing.JFrame;
 
-import chazzvader.game.input.InputListener;
 import chazzvader.game.localization.LocalizationManager;
 import chazzvader.game.other.Console;
-import chazzvader.game.sided.client.render.ImageManager;
 
 /**
  * Frame to render everything on
@@ -13,10 +11,11 @@ import chazzvader.game.sided.client.render.ImageManager;
  * @since 1.0
  * @version 1.0
  */
+@Deprecated
 @SuppressWarnings("serial")
 public class GameFrame extends JFrame {
 
-	private InputListener l;
+	//private InputListener l;
 	
 	/**
 	 * The panel in the frame
@@ -37,18 +36,18 @@ public class GameFrame extends JFrame {
 		this.setTitle(LocalizationManager.get("LOC_TITLE"));
 		this.setUndecorated(true);
 		this.setExtendedState(MAXIMIZED_BOTH);
-		this.setIconImage(ImageManager.WINDOW_ICON);
+		//this.setIconImage(ImageManager.WINDOW_ICON);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 				
-		panel = new GamePanel(this);
+		//panel = new GamePanel(this);
 		this.add(panel);
-		l = new InputListener(panel.getClient());
+		//l = new InputListener(panel.getClient());
 		
-		this.addMouseListener(l);
-		this.addMouseWheelListener(l);
-		this.addKeyListener(l);
-		this.addMouseMotionListener(l);				
-		this.setVisible(true);
+		//this.addMouseListener(l);
+		//this.addMouseWheelListener(l);
+		//this.addKeyListener(l);
+		//this.addMouseMotionListener(l);				
+		//this.setVisible(true);
 		
 		Console.print("(Client) Window started!", 0);
 		

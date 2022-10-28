@@ -1,10 +1,9 @@
 package chazzvader.game.sided.both.game.map;
 
-import chazzvader.game.content.manager.ContentBaseGame;
-import chazzvader.game.content.tiles.Tile;
+import chazzvader.game.content.ContentBaseGame;
+import chazzvader.game.content.Tile;
 import chazzvader.game.other.Coordinate;
 import chazzvader.game.sided.both.game.Player;
-import chazzvader.game.sided.client.render.WorldRenderer;
 
 public class Map {
 	
@@ -38,7 +37,7 @@ public class Map {
 		Tile[][] t = new Tile[w][h];
 		for(int i = 0;i < w;i ++) {
 			for(int j = 0;j < h;j ++) {
-				t[i][j] = ContentBaseGame.OCEAN.get(null, new Coordinate(i, j));
+				t[i][j] = ContentBaseGame.TILE_OCEAN.get();
 			}
 		}
 		return t;
@@ -48,6 +47,7 @@ public class Map {
 		this.tiles = tiles;
 		this.wrap = true;
 		refreshRValues();
+		finalize(null);
 	}
 	
 	/**
@@ -55,7 +55,7 @@ public class Map {
 	 * @return A int[] representing the min and max of tiles in the map. {x-min, x-max, y-min, y-max}
 	 */
 	public int[] getBounds() {
-		int[] a = new int[] {0, 0, 0, 0};
+		/*int[] a = new int[] {0, 0, 0, 0};
 		
 		int w = WorldRenderer.getTileWidth()*tiles.length+(WorldRenderer.getTileWidth()/2);
 		int h = (int) (WorldRenderer.getTileHeight()*tiles[0].length*0.75f);
@@ -65,12 +65,13 @@ public class Map {
 		a[2] = 0-h/4;
 		a[3] = h/2;
 		
-		return a;
+		return a;*/
+		return null;
 	}
 
 	private void refreshRValues() {
-		rwidth = WorldRenderer.getTileWidth()*tiles.length/2;	
-		rheight = WorldRenderer.getTileHeight()*tiles[0].length/2;
+		//rwidth = WorldRenderer.getTileWidth()*tiles.length/2;	
+		//rheight = WorldRenderer.getTileHeight()*tiles[0].length/2;
 	}
 	
 	/**
@@ -114,7 +115,7 @@ public class Map {
 		this.tiles = tiles;
 	}
 
-	public void mapWideUpdateYields(Player p) {
+	public void finalize(Player p) {
 		for(int i = 0;i < tiles.length;i ++) {
 			Tile[] ts = tiles[i];
 			for(int j = 0;j < ts.length;j ++) {

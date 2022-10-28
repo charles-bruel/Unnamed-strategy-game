@@ -12,6 +12,7 @@ import chazzvader.game.sided.client.ClientManager;
  * @since 1.0
  * @version 1.0
  */
+@Deprecated
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel {
 	
@@ -32,8 +33,8 @@ public class GamePanel extends JPanel {
 	public GamePanel(GameFrame frame) {
 		this.frame = frame;
 		
-		client = new ClientManager(frame, this);
-		client.start();
+		//client = new ClientManager(frame, this);
+		//client.start();
 		
 		
 	}
@@ -55,7 +56,7 @@ public class GamePanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		client.getRender().render(g);
+		//client.getRender().render(g);
 		long deltaEnd = System.nanoTime();
 		frameDelta = deltaEnd - lastFrameEndTime;
 		lastFrameEndTime = deltaEnd;

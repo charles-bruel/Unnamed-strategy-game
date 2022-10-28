@@ -6,26 +6,18 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import chazzvader.game.content.mapgen.MapGenStandard;
 import chazzvader.game.content.units.Unit;
 import chazzvader.game.input.ISelectable;
 import chazzvader.game.other.Console;
 import chazzvader.game.other.Coordinate;
-import chazzvader.game.other.Settings;
 import chazzvader.game.sided.both.comm.CommManager;
 import chazzvader.game.sided.both.comm.ExternalComm;
 import chazzvader.game.sided.both.comm.protocol.ProtocolAPI;
 import chazzvader.game.sided.both.comm.protocol.ProtocolManager;
 import chazzvader.game.sided.both.game.Game;
 import chazzvader.game.sided.both.game.Player;
-import chazzvader.game.sided.both.game.map.MapSize;
-import chazzvader.game.sided.client.comm.InternalCommClient;
-import chazzvader.game.sided.client.render.RenderManager;
-import chazzvader.game.sided.client.render.WorldRenderer;
-import chazzvader.game.sided.client.render.ui.UIManager;
-import chazzvader.game.sided.client.render.ui.UIManager.UIState;
-import chazzvader.game.sided.client.swing.GameFrame;
-import chazzvader.game.sided.client.swing.GamePanel;
-import chazzvader.game.sided.server.ServerManager;
+import chazzvader.game.sided.both.game.map.Map;
 
 /**
  * Class to manage all client-side (player) action and activities.
@@ -33,31 +25,18 @@ import chazzvader.game.sided.server.ServerManager;
  * @since 1.0
  * @version 1.0
  */
-public class ClientManager extends Thread {
+public class ClientManager {
 
 	/**
 	 * Constructor.
 	 * @param frame The window that a user sees.
 	 * @param panel The panel that deals with rendering etc.
 	 */
-	public ClientManager(GameFrame frame, GamePanel panel) {
-		this.frame = frame;
-		this.panel = panel;
-		this.ui = new UIManager(this);
-		this.render = new RenderManager(this);
-		
-		x = 0;
-		y = 0;
-		
-		this.setName("Client Thread");
+	public ClientManager() {
+		//TODO: 3 Constructor
 	}
 		
 	private CommManager comms;
-	
-	/**
-	 * The window that a user sees.
-	 */
-	private GameFrame frame;
 	
 	/**
 	 * A game object
@@ -77,19 +56,7 @@ public class ClientManager extends Thread {
 	private boolean igame = false;
 	private LinkedList<String> l = new LinkedList<>();
 	
-	/**
-	 * The panel that deals with rendering etc.
-	 */
-	private GamePanel panel;
-	
-	private double pdelta = 0;
-	
 	private Player player = null;
-	
-	/**
-	 * The RenderManager thats renders everything.
-	 */
-	private RenderManager render;
 
 	private boolean tGame = false;
 
@@ -104,11 +71,7 @@ public class ClientManager extends Thread {
 	 * Is it your turn?
 	 */
 	private boolean turn = false;
-	/**
-	 * The UIManager used for rendering and dealing with the UI.
-	 */
-	private UIManager ui;
-	
+
 	private boolean update;
 	
 	/**
@@ -121,16 +84,15 @@ public class ClientManager extends Thread {
 	 * 0.1f - 1.0f
 	 */
 	private float zoom = 1;
-	/**
-	 * The optimal time for each frame to take to get the target FPS.
-	 */
-	final long SLEEP_TIME = 1000 / Settings.getTargetFps();
+
+	private double pdelta = 0;
 	
 	public void createGame() {
-		this.igame = true;
+		/*this.igame = true;
 		this.comms = new InternalCommClient();
 		ui.setUIState(UIState.GAME);
-		new ServerManager(MapSize.DUEL);
+		new ServerManager(MapSize.STANDARD);*/
+		//TODO: 2 Method
 	}
 
 	public void endTurn() {
@@ -139,17 +101,12 @@ public class ClientManager extends Thread {
 		this.sendMSG("NEXT_TURN");
 	}
 	
-	/**
-	 * Gets the window that a user sees.
-	 * @return The window that a user sees.
-	 */
-	public GameFrame getFrame() {
-		return frame;
-	}
-	
 	public void setCameraPosByCoord(Coordinate c) {
+		/*
 		x = (WorldRenderer.getTileWidth()/2)*c.getX();
 		y = (int) ((WorldRenderer.getTileHeight()/2)*c.getY()*0.75);
+		*/
+		//TODO: 2 Method
 	}
 	
 	/**
@@ -159,22 +116,6 @@ public class ClientManager extends Thread {
 	public Game getGame() {
 		return game;
 	}
-	
-	/**
-	 * Gets the panel that deals with rendering etc.
-	 * @return The panel that deals with rendering etc.
-	 */
-	public GamePanel getPanel() {
-		return panel;
-	}
-		
-	/**
-	 * Gets the RenderManager thats renders everything.
-	 * @return The RenderManager thats renders everything.
-	 */
-	public RenderManager getRender() {
-		return render;
-	}
 
 	/**
 	 * Gets the incrementing time variable, used for animations.
@@ -182,14 +123,6 @@ public class ClientManager extends Thread {
 	 */
 	public long getTime() {
 		return time;
-	}
-	
-	/**
-	 * Gets the UIManager used for rendering and dealing with the UI.
-	 * @return The UIManager used for rendering and dealing with the UI.
-	 */
-	public UIManager getUi() {
-		return ui;
 	}
 
 	/**
@@ -236,34 +169,6 @@ public class ClientManager extends Thread {
 	}
 
 	/**
-	 * Run loop. Called as a thread. Deals with timings.
-	 */
-	@Override
-	public void run() {
-		long lastNano = System.nanoTime();
-		while (gameRunning) {
-			long currentNano = System.nanoTime();
-			
-			long delta = currentNano - lastNano;
-			doGameUpdates(delta/1000000);
-			
-			panel.repaint();
-			lastNano = System.nanoTime();
-
-			try {
-				long tt = SLEEP_TIME;
-				if (tt > 0) {
-					Thread.sleep(tt);
-				}
-			} catch (InterruptedException e) {
-				Console.error(e, true);
-			} catch (IllegalArgumentException e) {
-				Console.error(e, true);
-			}
-			
-		}
-	}
-	/**
 	 * @return the player
 	 */
 	public Player getPlayer() {
@@ -302,9 +207,9 @@ public class ClientManager extends Thread {
 	 * Performs all game updates. Not a lot here, as most happens server side and nothing happens in real time.
 	 * @param delta
 	 */
-	private void doGameUpdates(double delta) {
+	public void update(double delta) {
 		//Update time, used for animations
-		pdelta += delta;
+		pdelta  += delta;
 		while(pdelta > 5){
 			pdelta -= 5;
 			time++;
@@ -352,7 +257,7 @@ public class ClientManager extends Thread {
 				game = ProtocolManager.gameFromProto(l);
 				l = new LinkedList<String>();
 				turn = true;
-				WorldRenderer.callUpdate();
+				//WorldRenderer.callUpdate();
 				return;
 			}
 			if(tGame) {
@@ -394,7 +299,7 @@ public class ClientManager extends Thread {
 				Console.print("(Client) Attempting connection at "+ip+":"+port, 0);
 				this.comms = new ExternalComm(socket);
 				this.igame = true;
-				ui.setUIState(UIState.GAME);
+				//ui.setUIState(UIState.GAME);
 				Console.print("(Client) Connection successful", 0);
 				return;
 			} catch (UnknownHostException e) {
@@ -403,5 +308,11 @@ public class ClientManager extends Thread {
 				Console.error(e, false);
 			}
 		}
+	}
+
+	public void createDebugGame() {
+		game = new Game();
+		Map map = new MapGenStandard().generate(1000, 750);
+		game.setMap(map);
 	}
 }

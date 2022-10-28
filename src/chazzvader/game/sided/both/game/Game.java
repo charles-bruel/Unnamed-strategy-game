@@ -3,9 +3,9 @@ package chazzvader.game.sided.both.game;
 import java.util.ArrayList;
 import java.util.Random;
 
+import chazzvader.game.content.Tile;
 import chazzvader.game.content.civilizations.startbias.StartBias;
 import chazzvader.game.content.mapgen.MapGenerator;
-import chazzvader.game.content.tiles.Tile;
 import chazzvader.game.content.units.Unit;
 import chazzvader.game.content.units.Units;
 import chazzvader.game.input.InputHelper;
@@ -33,7 +33,7 @@ public class Game {
 			if(!(mg instanceof MapGenerator)) {
 				Console.error(new IllegalArgumentException(), true);
 			}
-			this.map = ((MapGenerator) mapGen.newInstance()).generate(width, height, null);
+			this.map = ((MapGenerator) mapGen.newInstance()).generate(width, height);
 		} catch (InstantiationException e) {
 			Console.error(e, true);
 		} catch (IllegalAccessException e) {
@@ -191,7 +191,7 @@ public class Game {
 	}
 	
 	public void placePlayer(Player player) {
-		int startingVisibilityRadius = 2;//TODO: Something make these editable
+		int startingVisibilityRadius = 2;//TODO: 5 Something make these editable
 		int considerSize = 5;
 		int randomnessFactor = 7;
 		ArrayList<StartBias> startBias = player.getCivilization().getStartBias();
@@ -224,7 +224,7 @@ public class Game {
 		for(int x = 0;x < weights.length;x ++) {
 			for(int y = 0;y < weights[0].length;y ++) {
 				if(weights[x][y] > maxWeight) {
-					maxWeight = weights[x][y];
+					maxWeight = weights[x][y];	
 				}
 			}
 		}

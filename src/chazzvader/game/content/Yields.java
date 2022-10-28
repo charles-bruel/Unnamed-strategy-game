@@ -1,9 +1,10 @@
 package chazzvader.game.content;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
-import chazzvader.game.sided.client.render.GraphicsWrapper;
-import chazzvader.game.sided.client.render.ImageManager;
+import chazzvader.game.engine.render.TextureManager;
+import chazzvader.game.engine.render.TextureManager.Texture;
 
 public class Yields {
 
@@ -13,19 +14,19 @@ public class Yields {
 	public static final int SMALL_SPACING = BASE_SPACING / 2;
 	public static final int MAX_ARRAY_SIZE = 3;
 
-	public static final BufferedImage FOOD_IMAGE = ImageManager.FOOD;
-	public static final BufferedImage PROD_IMAGE = ImageManager.PRODUCTION;
-	public static final BufferedImage GOLD_IMAGE = ImageManager.GOLD;
-	public static final BufferedImage CULTURE_IMAGE = ImageManager.CULTURE;
-	public static final BufferedImage FAITH_IMAGE = ImageManager.FAITH;
-	public static final BufferedImage SCI_IMAGE = ImageManager.SCIENCE;
+	public static final BufferedImage FOOD_IMAGE = null;
+	public static final BufferedImage PROD_IMAGE = null;
+	public static final BufferedImage GOLD_IMAGE = null;
+	public static final BufferedImage CULTURE_IMAGE = null;
+	public static final BufferedImage FAITH_IMAGE = null;
+	public static final BufferedImage SCI_IMAGE = null;
 
-	public static final BufferedImage FOOD_IMAGE_SIMPLE = ImageManager.FOOD_SIMPLE;
-	public static final BufferedImage PROD_IMAGE_SIMPLE = ImageManager.PRODUCTION_SIMPLE;
-	public static final BufferedImage GOLD_IMAGE_SIMPLE = ImageManager.GOLD_SIMPLE;
-	public static final BufferedImage CULTURE_IMAGE_SIMPLE = ImageManager.CULTURE_SIMPLE;
-	public static final BufferedImage FAITH_IMAGE_SIMPLE = ImageManager.FAITH_SIMPLE;
-	public static final BufferedImage SCI_IMAGE_SIMPLE = ImageManager.SCIENCE_SIMPLE;
+	public static final BufferedImage FOOD_IMAGE_SIMPLE = null;
+	public static final BufferedImage PROD_IMAGE_SIMPLE = null;
+	public static final BufferedImage GOLD_IMAGE_SIMPLE = null;
+	public static final BufferedImage CULTURE_IMAGE_SIMPLE = null;
+	public static final BufferedImage FAITH_IMAGE_SIMPLE = null;
+	public static final BufferedImage SCI_IMAGE_SIMPLE = null;
 
 	private int food, production, science, culture, faith, gold;
 
@@ -33,6 +34,10 @@ public class Yields {
 	private BufferedImage[] complex;
 	private BufferedImage[] simple;
 	private int pages;
+	
+	public Yields copy() {
+		return new Yields(food, production, science, culture, faith, gold);
+	}
 	
 	public BufferedImage[] getComplex() {
 		return complex;
@@ -122,13 +127,13 @@ public class Yields {
 		this(0, 0, 0, 0, 0, 0);
 	}
 
-	public void renderYieldsSmall(GraphicsWrapper g, int fx, int fy, float z) {
+	/*public void renderYieldsSmall(GraphicsWrapper g, int fx, int fy, float z) {
 		renderYields(g, fx, fy, z, SMALL_SIZE, SMALL_SPACING, false);
 	}
 
 	public void renderYieldsLarge(GraphicsWrapper g, int fx, int fy, float z) {
 		renderYields(g, fx, fy, z, BASE_SIZE, BASE_SPACING, true);
-	}
+	}*/
 
 	public void updateImageAndPositions() {
 		arrayLength = (int) Math.ceil(Math.sqrt(getTotalYields()));
@@ -181,7 +186,7 @@ public class Yields {
 	}
 
 	private void drawToImages() {
-		complex = new BufferedImage[pages];
+		/*complex = new BufferedImage[pages];
 		simple = new BufferedImage[pages];
 		for(int i = 0;i < pages;i ++) {
 			int baseImageSize = (arrayLength - 1) * BASE_SPACING + BASE_SIZE;
@@ -210,13 +215,13 @@ public class Yields {
 			simpleGraphics.raw().dispose();
 			this.complex[i] = complex;
 			this.simple[i] = simple;
-		}
+		}*/
 	}
 
-	private void renderYields(GraphicsWrapper g, int fx, int fy, float z, int size, int spacing, boolean complex) {
+	/*private void renderYields(GraphicsWrapper g, int fx, int fy, float z, int size, int spacing, boolean complex) {
 		if (z < 0.3f || toDraw == null)
 			return;
-		/*int isz = (int) (size * z);
+		int isz = (int) (size * z);
 		int isp = (int) (spacing * z);
 		int bx = fx - (isp * (arrayLength - 1)) / 2;
 		int by = fy - (isp * (arrayLength - 1)) / 2;
@@ -232,13 +237,13 @@ public class Yields {
 				imageToDraw = yieldToDraw.getSimple();
 			}
 			g.renderImageCenter(imageToDraw, bx + (i % arrayLength) * isp, by + (i / arrayLength) * isp, isz, isz);
-		}*/
+		}
 		long time = System.currentTimeMillis() / 1000;
 		int pageID = (int) (time % pages);
 		BufferedImage image = complex ? this.complex[pageID] : this.simple[pageID];
 		int finalSize = (int) (image.getWidth() * z);
 		g.renderImageCenter(image, fx, fy, finalSize, finalSize);
-	}
+	}*/
 
 	public Yields add(int food, int production, int science, int culture, int faith, int gold) {
 		this.food += food;
@@ -301,6 +306,65 @@ public class Yields {
 		public BufferedImage getComplex() {
 			return complex;
 		}
+	}
+	
+	public TextureManager.Texture[] getTextures() {//TODO: 1 Add 5x 7x textures
+		ArrayList<Texture> ret = new ArrayList<TextureManager.Texture>();
+		int tempFood = food;
+		int tempProd = production;
+		int tempGold = gold;
+		int tempSci = science;
+		int tempCult = culture;
+		int tempFaith = faith;
+		while(tempFood >= 3) {
+			tempFood -= 3;
+			ret.add(TextureManager.ICON_FOOD_3x);
+		}
+		while(tempFood >= 1) {
+			tempFood --;
+			ret.add(TextureManager.ICON_FOOD_SIMPLE);
+		}
+		while(tempProd >= 3) {
+			tempProd -= 3;
+			ret.add(TextureManager.ICON_PRODUCTION_3x);
+		}
+		while(tempProd >= 1) {
+			tempProd --;
+			ret.add(TextureManager.ICON_PRODUCTION_SIMPLE);
+		}
+		while(tempGold >= 3) {
+			tempGold -= 3;
+			ret.add(TextureManager.ICON_GOLD_3x);
+		}
+		while(tempGold >= 1) {
+			tempGold --;
+			ret.add(TextureManager.ICON_GOLD_SIMPLE);
+		}
+		while(tempSci >= 3) {
+			tempSci -= 3;
+			ret.add(TextureManager.ICON_SCIENCE_3x);
+		}
+		while(tempSci >= 1) {
+			tempSci --;
+			ret.add(TextureManager.ICON_SCIENCE_SIMPLE);
+		}
+		while(tempCult >= 3) {
+			tempCult -= 3;
+			ret.add(TextureManager.ICON_CULTURE_3x);
+		}
+		while(tempCult >= 1) {
+			tempCult --;
+			ret.add(TextureManager.ICON_CULTURE_SIMPLE);
+		}
+		while(tempFaith >= 3) {
+			tempFaith -= 3;
+			ret.add(TextureManager.ICON_FAITH_3x);
+		}
+		while(tempFaith >= 1) {
+			tempFaith --;
+			ret.add(TextureManager.ICON_FAITH_SIMPLE);
+		}
+		return ret.toArray(new Texture[ret.size()]);
 	}
 
 }

@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 
+import chazzvader.game.content.Tile;
 import chazzvader.game.content.mapgen.MapGenStandard;
-import chazzvader.game.content.tiles.Tile;
 import chazzvader.game.content.units.Unit;
 import chazzvader.game.input.InputHelper;
 import chazzvader.game.other.Console;
@@ -63,7 +63,7 @@ public class ServerManager implements Runnable {
 	}
 	
 	private void newPlayer(Socket s) {
-		synchronized (game) {//TODO: Add logic to stop super late players
+		synchronized (game) {//TODO: 5 Add logic to stop super late players
 			Console.print("(Server) Connecting new player", 0);
 			Player newPlayer = new Player(new ExternalComm(s));
 			newPlayer.setup(game);
@@ -191,7 +191,7 @@ public class ServerManager implements Runnable {
 		if(u.getOwner() != activeEntity) {
 			return;
 		}
-		Path path = new Path(u.getPos(), new SubTileCoordinate(tx, ty, SubTile.fromID(st)), game.getMap(), false);//TODO: Add water/land differenation
+		Path path = new Path(u.getPos(), new SubTileCoordinate(tx, ty, SubTile.fromID(st)), game.getMap(), false);//TODO: 5 Add water/land differenation
 		ArrayList<SubTileCoordinate> cs = path.getPath();
 		if(cs == null) {
 			return;

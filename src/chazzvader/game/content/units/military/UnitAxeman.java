@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 
 import chazzvader.game.other.SubTileCoordinate.SubTile;
 import chazzvader.game.sided.both.game.Entity;
-import chazzvader.game.sided.client.render.ImageManager;
 
 public class UnitAxeman extends UnitMilitary {
 
@@ -14,7 +13,7 @@ public class UnitAxeman extends UnitMilitary {
 
 	@Override
 	public BufferedImage getIconImage() {
-		return ImageManager.MILITARY_UNIT_AXEMAN;
+		return null;
 	}
 
 	@Override

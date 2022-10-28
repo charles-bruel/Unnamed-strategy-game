@@ -3,12 +3,10 @@ package chazzvader.game.sided.both.comm.protocol;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import chazzvader.game.content.features.Feature;
-import chazzvader.game.content.features.Features;
-import chazzvader.game.content.manager.ContentBaseGame;
-import chazzvader.game.content.resources.Resource;
-import chazzvader.game.content.resources.Resources;
-import chazzvader.game.content.tiles.Tile;
+import chazzvader.game.content.ContentManager;
+import chazzvader.game.content.Feature;
+import chazzvader.game.content.Resource;
+import chazzvader.game.content.Tile;
 import chazzvader.game.content.units.Unit;
 import chazzvader.game.content.units.Units;
 import chazzvader.game.other.Console;
@@ -18,7 +16,7 @@ import chazzvader.game.sided.both.game.Entity;
 import chazzvader.game.sided.both.game.Game;
 import chazzvader.game.sided.both.game.Player;
 import chazzvader.game.sided.both.game.map.Map;
-//TODO: Proper javadocs for all of these
+//TODO: 5 Proper javadocs for all of these
 /**
  * Class that manages server client communication protocol. Provides many
  * methods to decode messages as well as a javadoc description of the entire
@@ -183,7 +181,7 @@ public final class ProtocolManager {
 				}
 			}
 		}
-		m.mapWideUpdateYields(null);
+		m.finalize(null);
 		Console.print("(Protocol) Map loaded", 0);
 		return m;
 	}
@@ -228,7 +226,7 @@ public final class ProtocolManager {
 
 		int tileId = ProtocolAPI.bitsToInt(b1);
 		
-		Tile t = ContentBaseGame.TILES.getByID(tileId, ec, null);
+		Tile t = (Tile) ContentManager.getFromID(Tile.class, tileId);
 
 		if(t == null) {
 			return t;
@@ -236,14 +234,14 @@ public final class ProtocolManager {
 		
 		boolean[] b2 = new boolean[] { b[5], b[6], b[7], b[8] };
 
-		Feature f = Features.fromIndex(ProtocolAPI.bitsToInt(b2));
+		Feature f = (Feature) ContentManager.getFromID(Feature.class, ProtocolAPI.bitsToInt(b2));
 		if (f != null) {
 			t.addFeature(f, null);
 		}
 
 		boolean[] b3 = new boolean[] { b[9], b[10], b[11], b[12], b[13], b[58] };
 
-		Resource r = Resources.fromIndex(ProtocolAPI.bitsToInt(b3));
+		Resource r = (Resource) ContentManager.getFromID(Resource.class, ProtocolAPI.bitsToInt(b3));
 		if (r != null) {
 			t.addResource(r, null);
 		}
@@ -261,18 +259,18 @@ public final class ProtocolManager {
 				b[i] = false;
 			}
 		} else */{
-			boolean[] b1 = ProtocolAPI.intToBits(ContentBaseGame.TILES.getIDByObject(t), true, 5);
+			boolean[] b1 = ProtocolAPI.intToBits(ContentManager.toID(Tile.class, t), true, 5);
 			b[0] = b1[0];
 			b[1] = b1[1];
 			b[2] = b1[2];
 			b[3] = b1[3];
 			b[4] = b1[4];
-			boolean[] b2 = ProtocolAPI.intToBits(Features.toIndex(t.getFeature()), true, 4);
+			boolean[] b2 = ProtocolAPI.intToBits(ContentManager.toID(Feature.class, t.getFeature()), true, 4);
 			b[5] = b2[0];
 			b[6] = b2[1];
 			b[7] = b2[2];
 			b[8] = b2[3];
-			boolean[] b3 = ProtocolAPI.intToBits(Resources.toIndex(t.getResource()), true, 6);
+			boolean[] b3 = ProtocolAPI.intToBits(ContentManager.toID(Resource.class, t.getResource()), true, 6);
 			b[9] = b3[0];
 			b[10] = b3[1];
 			b[11] = b3[2];

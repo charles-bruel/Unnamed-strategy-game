@@ -2,14 +2,12 @@ package chazzvader.game.input;
 
 import java.util.ArrayList;
 
-import chazzvader.game.Main;
 import chazzvader.game.other.Coordinate;
 import chazzvader.game.other.Direction;
 import chazzvader.game.other.HexagonData;
 import chazzvader.game.other.SubTileCoordinate;
 import chazzvader.game.other.SubTileCoordinate.SubTile;
 import chazzvader.game.sided.client.ClientManager;
-import chazzvader.game.sided.client.render.WorldRenderer;
 
 /**
  * Various methods to help with input
@@ -148,11 +146,12 @@ public final class InputHelper {
 	}
 	
 	public static SubTileCoordinate determineTilePositionAtMouse(ClientManager client) {
-		return determineTilePositionAtPoint(client, Main.getFrame().getMouseX(), Main.getFrame().getMouseY());
+		//return determineTilePositionAtPoint(client, MainOld.getFrame().getMouseX(), MainOld.getFrame().getMouseY());
+		return null;
 	}
 	
 	public static SubTileCoordinate determineTilePositionAtPoint(ClientManager client, int x, int y) {
-		Coordinate c = new Coordinate(0, 0);
+		/*Coordinate c = new Coordinate(0, 0);
 		float z = client.getZoom();
 		c.setY(WorldRenderer.getYTilePos(y, client, client.getGame().getMap(), z));
 		c.setX(WorldRenderer.getXTilePos(x, c.getY(), client, client.getGame().getMap(), z));
@@ -252,10 +251,11 @@ public final class InputHelper {
 				}
 				return nc;
 			}
-		}
+		}*/
 		return null;
 	}
 	
+	@SuppressWarnings("unused")
 	private static SubTileCoordinate testSubTile(Coordinate c, int mx, int my, int bx, int by, float z, int etw, int eth, SubTile subtile) {
 		if(withinHexagonCenter(mx, my, (int) (bx+HexagonData.getXBySubTile(subtile)*z), (int) (by+HexagonData.getYBySubTile(subtile)*z), etw, eth)) {
 			return new SubTileCoordinate(c, subtile);

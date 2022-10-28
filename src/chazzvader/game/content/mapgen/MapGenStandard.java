@@ -3,15 +3,13 @@ package chazzvader.game.content.mapgen;
 import java.util.ArrayList;
 import java.util.Random;
 
-import chazzvader.game.content.features.Features;
-import chazzvader.game.content.manager.ContentBaseGame;
-import chazzvader.game.content.resources.Resource;
-import chazzvader.game.content.resources.Resources;
-import chazzvader.game.content.tiles.Tile;
+import chazzvader.game.content.ContentBaseGame;
+import chazzvader.game.content.ContentManager;
+import chazzvader.game.content.Resource;
+import chazzvader.game.content.Tile;
 import chazzvader.game.other.Console;
 import chazzvader.game.other.Coordinate;
 import chazzvader.game.sided.both.game.map.Map;
-import chazzvader.game.sided.client.render.ui.Parameter;
 
 public class MapGenStandard extends MapGenerator {
 
@@ -31,13 +29,12 @@ public class MapGenStandard extends MapGenerator {
 	}
 	
 	@Override
-	@SuppressWarnings("rawtypes")
-	public Map generate(int w, int h, ArrayList<Parameter> parameters) {
+	public Map generate(int w, int h) {
 		Map m = new Map(w, h);
 		m.setWrap(true);
 		Random r = new Random();
-		
-		MapLayout ml = MapLayout.PANGEA;
+			
+		MapLayout ml = MapLayout.CONTINENTS;
 		
 		int[][] om = noise(w, h, 1, seedPointCalculation(ml, w, h), subSeedPointCalculation(ml, w, h), maxDistanceCalculation(ml, w, h), r, true);
 		int[][] tm = noise(w, h, 5, seedPointCalculation(35, w, h), 3, r);
@@ -53,7 +50,7 @@ public class MapGenStandard extends MapGenerator {
 			for(int j = 0;j < h;j ++) {
 				if(m.getTiles()[i][j].getInName().equalsIgnoreCase("TileUselessOcean")) {
 					if(validateCoast(m.getTiles(), i, j)) {
-						m.setTile(i, j, ContentBaseGame.COAST.get(m, new Coordinate(i, j)));
+						m.setTile(i, j, ContentBaseGame.TILE_COAST.get());
 					}
 				}
 			}
@@ -66,7 +63,7 @@ public class MapGenStandard extends MapGenerator {
 				m.setTile(i, j, addResource(m.getTiles()[i][j], r, 90));
 			}
 		}
-		m.mapWideUpdateYields(null);
+		m.finalize(null);
 		Console.print("(Mapgen) Map Generation Complete!", 0);
 		return m;
 	}
@@ -155,7 +152,7 @@ public class MapGenStandard extends MapGenerator {
 	
 	private Tile addResource(Tile t, Random r, int threshold) {
 		if(r.nextInt(100) > threshold) {
-			Resource rs = Resources.fromIndex(r.nextInt(Resources.resourceCount())+1);
+			Resource rs = (Resource) ContentManager.getFromID(Resource.class, r.nextInt(ContentManager.getResourceCount()));
 			t.addResource(rs, null);
 		}
 		return t;
@@ -285,30 +282,30 @@ public class MapGenStandard extends MapGenerator {
 	}
 	
 	private Tile getTile(int h, int t, Coordinate c) {
-		Tile r = ContentBaseGame.OCEAN.get(null, c);
+		Tile r = ContentBaseGame.TILE_OCEAN.get();
 		
-		if(h == 1 && t == 1) r = ContentBaseGame.DESERT.get(null, c);
-		if(h == 2 && t == 1) r = ContentBaseGame.DESERT_HILLS.get(null, c);
-		if(h == 3 && t == 1) r = ContentBaseGame.DESERT_MOUNTAIN.get(null, c);
-		if(h == 1 && t == 2) r = ContentBaseGame.PLAINS.get(null, c);
-		if(h == 2 && t == 2) r = ContentBaseGame.PLAINS_HILLS.get(null, c);
-		if(h == 3 && t == 2) r = ContentBaseGame.PLAINS_MOUNTAIN.get(null, c);
-		if(h == 1 && t == 3) r = ContentBaseGame.GRASSLAND.get(null, c);
-		if(h == 2 && t == 3) r = ContentBaseGame.GRASSLAND_HILLS.get(null, c);
-		if(h == 3 && t == 3) r = ContentBaseGame.GRASSLAND_MOUNTAIN.get(null, c);
-		if(h == 1 && t == 4) r = ContentBaseGame.TUNDRA.get(null, c);
-		if(h == 2 && t == 4) r = ContentBaseGame.TUNDRA_HILLS.get(null, c);
-		if(h == 3 && t == 4) r = ContentBaseGame.TUNDRA_MOUNTAIN.get(null, c);
-		if(h == 1 && t == 5) r = ContentBaseGame.SNOW.get(null, c);
-		if(h == 2 && t == 5) r = ContentBaseGame.SNOW_HILLS.get(null, c);
-		if(h == 3 && t == 5) r = ContentBaseGame.SNOW_MOUNTAIN.get(null, c);
+		if(h == 1 && t == 1) r = ContentBaseGame.TILE_DESERT.get();
+		if(h == 2 && t == 1) r = ContentBaseGame.TILE_DESERT_HILL.get();
+		if(h == 3 && t == 1) r = ContentBaseGame.TILE_DESERT_MOUNTAIN.get();
+		if(h == 1 && t == 2) r = ContentBaseGame.TILE_PLAINS.get();
+		if(h == 2 && t == 2) r = ContentBaseGame.TILE_PLAINS_HILL.get();
+		if(h == 3 && t == 2) r = ContentBaseGame.TILE_PLAINS_MOUNTAIN.get();
+		if(h == 1 && t == 3) r = ContentBaseGame.TILE_GRASSLAND.get();
+		if(h == 2 && t == 3) r = ContentBaseGame.TILE_GRASSLAND_HILL.get();
+		if(h == 3 && t == 3) r = ContentBaseGame.TILE_GRASSLAND_MOUNTAIN.get();
+		if(h == 1 && t == 4) r = ContentBaseGame.TILE_TUNDRA.get();
+		if(h == 2 && t == 4) r = ContentBaseGame.TILE_TUNDRA_HILL.get();
+		if(h == 3 && t == 4) r = ContentBaseGame.TILE_TUNDRA_MOUNTAIN.get();
+		if(h == 1 && t == 5) r = ContentBaseGame.TILE_SNOW.get();
+		if(h == 2 && t == 5) r = ContentBaseGame.TILE_SNOW_HILL.get();
+		if(h == 3 && t == 5) r = ContentBaseGame.TILE_SNOW_MOUNTAIN.get();
 		
 		return r;
 	}
 	
 	private Tile getTile(int x, int y, int[][] om, int[][] tm, int[][] wm, int[][] gm, int[][] hm, int w, int h, Random ra) {
 		//Tile
-		Tile r = ContentBaseGame.OCEAN.get(null, new Coordinate(x, y));
+		Tile r = ContentBaseGame.TILE_OCEAN.get();
 		float di = h/2-Math.abs(y-h/2);
 		float mod = (di/h*2)*15;
 		float mt = tm[x][y]+mod-5;
@@ -343,14 +340,14 @@ public class MapGenStandard extends MapGenerator {
 		}
 		//Feature
 		if(ra.nextInt(10) == 1) {
-			r.addFeature(Features.oasis(), null);
+			r.addFeature(ContentBaseGame.FEATURE_OASIS.get(), null);
 		}
-		if(gm[x][y] == 1 && wm[x][y] > 2) {
+		if(gm[x][y] == 1 && wm[x][y] > 3) {
 			if(tm[x][y] * wm[x][y] > 30) {
-				r.addFeature(Features.rainForest(), null);
+				r.addFeature(ContentBaseGame.FEATURE_RAINFOREST.get(), null);
 			} else {
-				r.addFeature(Features.woods(), null);
-				r.addFeature(Features.pineWoods(), null);
+				r.addFeature(ContentBaseGame.FEATURE_WOODS.get(), null);
+				r.addFeature(ContentBaseGame.FEATURE_PINE_WOODS.get(), null);
 			}
 		}
 		return r;

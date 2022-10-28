@@ -38,14 +38,14 @@ public class Settings {
 	 * Pushes all settings to file
 	 */
 	public static void push() {
-		// TODO: Finish this
+		// TODO: 5 Finish this
 	}
 	
 	/**
 	 * Retrieves all settings from file
 	 */
 	public static void pull() {
-		// TODO: Finish this
+		// TODO: 5 Finish this
 	}
 	
 }

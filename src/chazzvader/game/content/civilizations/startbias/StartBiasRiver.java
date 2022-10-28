@@ -1,6 +1,6 @@
 package chazzvader.game.content.civilizations.startbias;
 
-import chazzvader.game.content.tiles.Tile;
+import chazzvader.game.content.Tile;
 
 public class StartBiasRiver extends StartBias{
 
